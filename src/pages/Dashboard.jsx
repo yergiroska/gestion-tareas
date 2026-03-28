@@ -1,5 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import TaskForm from "../components/TaskForm";
+import TaskList from "../components/TaskList";
 
 export default function Dashboard() {
     const { user, logout } = useAuth();
@@ -22,7 +24,8 @@ export default function Dashboard() {
                 </div>
             </div>
             <div style={styles.content}>
-                <p style={styles.welcome}>¡Bienvenido! Aquí aparecerán tus tareas.</p>
+                <TaskForm />
+                <TaskList />
             </div>
         </div>
     );
