@@ -31,9 +31,4 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
 
       - name: Deploy a Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_TOKEN }}
-          channelId: live
-          projectId: gestion-tareas-491606
+        run: npx firebase-tools deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }} --project gestion-tareas-491606
