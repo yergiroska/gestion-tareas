@@ -15,7 +15,7 @@ export default function Dashboard() {
     return (
         <div style={styles.container}>
             <div style={styles.header}>
-                <h1 style={styles.title}>📋 Gestión de Tareas</h1>
+                <h1 style={styles.title}>📋 Gestión de Tarea</h1>
                 <div style={styles.userInfo}>
                     <span style={styles.email}>{user?.email}</span>
                     <button onClick={handleLogout} style={styles.button}>
