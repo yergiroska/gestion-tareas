@@ -11,6 +11,7 @@ import {
     serverTimestamp,
 } from "firebase/firestore";
 import { db } from "./firebase";
+import { migrateStatus } from "../constants/statuses";
 
 const COLLECTION = "tasks";
 
@@ -24,6 +25,8 @@ export const subscribeTasks = (userId, callback) => {
         const tasks = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
+            category: doc.data().category ?? "otro",
+            status: migrateStatus({ ...doc.data() }),
         }));
         callback(tasks);
     });
@@ -33,7 +36,7 @@ export const createTask = (userId, task) =>
     addDoc(collection(db, COLLECTION), {
         ...task,
         userId,
-        completed: false,
+        status: "pendiente",
         createdAt: serverTimestamp(),
     });
 
