@@ -27,6 +27,7 @@ export const subscribeTasks = (userId, callback) => {
             ...doc.data(),
             category: doc.data().category ?? "otro",
             status: migrateStatus({ ...doc.data() }),
+            priority: doc.data().priority ?? "media",
         }));
         callback(tasks);
     });
