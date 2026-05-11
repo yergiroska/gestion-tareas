@@ -91,6 +91,7 @@ export default function TaskForm() {
             </div>
 
             <form onSubmit={handleSubmit} style={styles.form}>
+                <p style={styles.fieldLabel}>Título</p>
                 <input
                     type="text"
                     placeholder="Título de la tarea *"
@@ -98,6 +99,7 @@ export default function TaskForm() {
                     onChange={(e) => setTitle(e.target.value)}
                     style={styles.input}
                 />
+                <p style={styles.fieldLabel}>Descripción</p>
                 <textarea
                     placeholder="Descripción de la tarea *"
                     value={description}
@@ -105,16 +107,14 @@ export default function TaskForm() {
                     style={styles.textarea}
                     rows={3}
                 />
-                <div style={styles.dateRow}>
-                    <label style={styles.dateLabel}>📅 Fecha límite *</label>
-                    <input
-                        type="date"
-                        value={dueDate}
-                        onChange={(e) => setDueDate(e.target.value)}
-                        min={today}
-                        style={styles.dateInput}
-                    />
-                </div>
+                <p style={styles.fieldLabel}>📅 Fecha límite *</p>
+                <input
+                    type="date"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                    onClick={(e) => e.target.showPicker?.()}
+                    style={styles.dateInput}
+                />
                 <button type="submit" disabled={loading} style={styles.submitBtn}>
                     {loading ? "Guardando..." : "+ Añadir"}
                 </button>
@@ -141,23 +141,18 @@ const styles = {
     input: {
         padding: "0.75rem 1rem", borderRadius: "8px",
         border: "1px solid #e5e7eb", fontSize: "1rem", outline: "none",
-        backgroundColor: "#f9fafb",
+        backgroundColor: "white", color: "#1f2937",
     },
     textarea: {
         padding: "0.75rem 1rem", borderRadius: "8px",
         border: "1px solid #e5e7eb", fontSize: "0.95rem", outline: "none",
-        backgroundColor: "#f9fafb", resize: "vertical", fontFamily: "inherit",
-    },
-    dateRow: {
-        display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap",
-    },
-    dateLabel: {
-        fontSize: "0.9rem", fontWeight: "600", color: "#374151", whiteSpace: "nowrap",
+        backgroundColor: "white", color: "#1f2937",
+        resize: "vertical", fontFamily: "inherit",
     },
     dateInput: {
         padding: "0.6rem 0.75rem", borderRadius: "8px",
         border: "1px solid #e5e7eb", fontSize: "0.95rem", outline: "none",
-        backgroundColor: "#f9fafb", cursor: "pointer", flex: 1,
+        backgroundColor: "white", color: "#1f2937", cursor: "pointer", flex: 1,
     },
     submitBtn: {
         padding: "0.75rem 1.5rem", backgroundColor: "#4f46e5",

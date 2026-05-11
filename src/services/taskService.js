@@ -9,6 +9,7 @@ import {
     orderBy,
     onSnapshot,
     serverTimestamp,
+    getDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { migrateStatus } from "../constants/statuses";
@@ -33,6 +34,35 @@ export const subscribeTasks = (userId, callback) => {
     });
 };
 
+// Escucha una tarea en tiempo real por ID
+export const subscribeTask = (taskId, callback) => {
+    return onSnapshot(doc(db, COLLECTION, taskId), (snap) => {
+        if (!snap.exists()) return callback(null);
+        const data = snap.data();
+        callback({
+            id: snap.id,
+            ...data,
+            category: data.category ?? "otro",
+            status: migrateStatus({ ...data }),
+            priority: data.priority ?? "media",
+        });
+    });
+};
+
+// Obtener una tarea una sola vez por ID
+export const getTaskById = async (taskId) => {
+    const snap = await getDoc(doc(db, COLLECTION, taskId));
+    if (!snap.exists()) return null;
+    const data = snap.data();
+    return {
+        id: snap.id,
+        ...data,
+        category: data.category ?? "otro",
+        status: migrateStatus({ ...data }),
+        priority: data.priority ?? "media",
+    };
+};
+
 export const createTask = (userId, task) =>
     addDoc(collection(db, COLLECTION), {
         ...task,
@@ -42,7 +72,10 @@ export const createTask = (userId, task) =>
     });
 
 export const updateTask = (taskId, data) =>
-    updateDoc(doc(db, COLLECTION, taskId), data);
+    updateDoc(doc(db, COLLECTION, taskId), {
+        ...data,
+        updatedAt: serverTimestamp(),
+    });
 
 export const deleteTask = (taskId) =>
     deleteDoc(doc(db, COLLECTION, taskId));
