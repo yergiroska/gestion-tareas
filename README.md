@@ -2,8 +2,6 @@
 
 Aplicación web de gestión de tareas personales construida con React y Firebase. Permite crear, organizar y hacer seguimiento de tareas con estados, categorías, prioridades y fechas límite.
 
-🌐 **Demo en vivo:** [gestion-tareas-491606.web.app](https://gestion-tareas-491606.web.app)
-
 ---
 
 ## ✨ Funcionalidades
