@@ -178,7 +178,8 @@ export default function TaskDetail() {
                         type="date"
                         value={dueDate}
                         onChange={(e) => setDueDate(e.target.value)}
-                        style={styles.dateInput}
+                        onClick={(e) => e.target.showPicker?.()}
+                        style={{ ...styles.dateInput, colorScheme: "light" }}
                     />
 
                     {error && <p style={styles.error}>{error}</p>}
@@ -258,7 +259,7 @@ const styles = {
     dateInput: {
         width: "100%", padding: "0.65rem 1rem", borderRadius: "8px",
         border: "1.5px solid #e5e7eb", fontSize: "0.95rem", outline: "none",
-        backgroundColor: "#f9fafb", marginBottom: "1.25rem",
+        backgroundColor: "white", color: "#1f2937", marginBottom: "1.25rem",
         boxSizing: "border-box", cursor: "pointer",
     },
     error: { color: "#ef4444", fontSize: "0.9rem", marginBottom: "0.75rem" },

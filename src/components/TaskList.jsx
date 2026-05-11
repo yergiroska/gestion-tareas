@@ -40,7 +40,7 @@ function CustomSelect({ value, onChange, options, allLabel, allCount }) {
                 <span style={styles.selectArrow}>{open ? "▲" : "▼"}</span>
             </button>
             {open && (
-                <div style={styles.dropdown}>
+                <div className={css.dropdown}>
                     <div
                         onClick={() => { onChange(ALL); setOpen(false); }}
                         style={{
@@ -199,7 +199,6 @@ const styles = {
     selectLabel: { margin: "0 0 0.3rem 0", fontSize: "0.72rem", fontWeight: "700", color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em" },
     selectTrigger: { width: "100%", padding: "0.5rem 0.6rem", borderRadius: "10px", border: "1.5px solid", fontSize: "0.82rem", fontWeight: "600", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.25rem", boxSizing: "border-box" },
     selectArrow: { fontSize: "0.65rem", opacity: 0.7 },
-    dropdown: { position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, backgroundColor: "white", borderRadius: "10px", boxShadow: "0 4px 20px rgba(0,0,0,0.12)", border: "1px solid #e5e7eb", zIndex: 100, overflow: "hidden" },
     dropdownItem: { padding: "0.6rem 0.75rem", cursor: "pointer", fontSize: "0.82rem", fontWeight: "500", display: "flex", alignItems: "center", gap: "0.5rem", whiteSpace: "nowrap" },
     dot: { width: "8px", height: "8px", borderRadius: "50%", flexShrink: 0 },
     description: { fontSize: "0.82rem", color: "#6b7280", textAlign: "left", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" },
