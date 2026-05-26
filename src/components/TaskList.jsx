@@ -84,6 +84,7 @@ export default function TaskList() {
     const [statusFilter, setStatusFilter]     = useState(ALL);
     const [priorityFilter, setPriorityFilter] = useState(ALL);
     const [searchQuery, setSearchQuery]       = useState("");
+    const [bannerDismissed, setBannerDismissed] = useState(false);
 
     useEffect(() => {
         const unsubscribe = subscribeTasks(user.uid, (tasks) => {
@@ -92,6 +93,12 @@ export default function TaskList() {
         });
         return () => unsubscribe();
     }, [user.uid]);
+
+
+    const today = new Date().toISOString().split("T")[0];
+    const activeTasks = tasks.filter(t => !["completada", "cancelada"].includes(t.status));
+    const overdueCount = activeTasks.filter(t => t.dueDate && t.dueDate < today).length;
+    const todayCount   = activeTasks.filter(t => t.dueDate && t.dueDate === today).length;
 
     const visibleTasks = tasks.filter(t => t.status !== "cancelada");
     const byCategory = categoryFilter === ALL ? visibleTasks : visibleTasks.filter(t => t.category === categoryFilter);
@@ -109,6 +116,23 @@ export default function TaskList() {
 
     return (
         <div>
+            {!bannerDismissed && (overdueCount > 0 || todayCount > 0) && (
+                <div style={styles.banner}>
+                    <div style={styles.bannerMessages}>
+                        {overdueCount > 0 && (
+                            <span style={styles.bannerOverdue}>
+                                ⚠️ {overdueCount} tarea{overdueCount > 1 ? "s" : ""} vencida{overdueCount > 1 ? "s" : ""}
+                            </span>
+                        )}
+                        {todayCount > 0 && (
+                            <span style={styles.bannerToday}>
+                                ⏰ {todayCount} tarea{todayCount > 1 ? "s" : ""} vence{todayCount > 1 ? "n" : ""} hoy
+                            </span>
+                        )}
+                    </div>
+                    <button onClick={() => setBannerDismissed(true)} style={styles.bannerClose}>✕</button>
+                </div>
+            )}
             <input
                 type="text"
                 placeholder="🔍 Buscar tarea..."
@@ -204,4 +228,17 @@ const styles = {
     description: { fontSize: "0.82rem", color: "#6b7280", textAlign: "left", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" },
     badge: { fontSize: "0.75rem", fontWeight: "600", padding: "0.25rem 0.65rem", borderRadius: "20px", whiteSpace: "nowrap" },
     message: { textAlign: "center", color: "#999", marginTop: "2rem" },
+    banner: {
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        padding: "0.65rem 1rem", marginBottom: "1rem",
+        borderRadius: "10px", backgroundColor: "#fef9c3",
+        border: "1px solid #fde047", gap: "0.75rem",
+    },
+    bannerMessages: { display: "flex", flexWrap: "wrap", gap: "0.75rem" },
+    bannerOverdue: { fontSize: "0.85rem", fontWeight: "600", color: "#dc2626" },
+    bannerToday:   { fontSize: "0.85rem", fontWeight: "600", color: "#d97706" },
+    bannerClose: {
+        background: "none", border: "none", cursor: "pointer",
+        fontSize: "0.85rem", color: "#92400e", flexShrink: 0, padding: "0.1rem 0.3rem",
+    },
 };

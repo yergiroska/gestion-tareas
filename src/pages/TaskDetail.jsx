@@ -41,16 +41,22 @@ export default function TaskDetail() {
         setError("");
         try {
             await updateTask(id, { status, category, priority, dueDate });
-            setTimeout(() => navigate("/dashboard"), 800);
-        } catch (e) {
+            navigate("/dashboard");
+        } catch {
             setError("Error al guardar los cambios.");
+        } finally {
             setSaving(false);
         }
     };
 
     const handleDelete = async () => {
-        await deleteTask(id);
-        navigate("/dashboard");
+        try {
+            await deleteTask(id);
+            navigate("/dashboard");
+        } catch {
+            setShowDeleteModal(false);
+            setError("Error al eliminar la tarea. Intenta de nuevo.");
+        }
     };
 
     const handleCancel = () => navigate("/dashboard");

@@ -12,11 +12,14 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        if (password.length < 6) return setError("La contraseña debe tener al menos 6 caracteres.");
         try {
             await register(email, password);
             navigate("/dashboard");
         } catch (err) {
-            setError("Error al registrarse. Verifica tus datos.");
+            if (err.code === "auth/email-already-in-use") setError("Ya existe una cuenta con ese correo.");
+            else if (err.code === "auth/invalid-email")   setError("El correo no es válido.");
+            else                                          setError("Error al registrarse. Intenta de nuevo.");
         }
     };
 
